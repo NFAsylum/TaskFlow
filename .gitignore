@@ -1,0 +1,19 @@
+# npm
+node_modules/
+
+# output
+dist/
+build/
+bin/
+obj/
+
+# env
+.env
+
+# ide
+.vs/
+.vscode/settings.json
+
+# system files
+.DS_Store
+Thumbs.db
