@@ -1,3 +1,5 @@
+import BoardColumn from './BoardColumn'
+
 function App() {
   const title = "Ticket Board"
 
@@ -9,8 +11,11 @@ function App() {
       <div className="bg-gray-900 p-2 text-gray-400 text-2xl">
         by Marco
       </div>
-      <div className="bg-blue-600 p-2 text-gray-400 text-2xl">
-        Open
+      <div className="flex">
+        <BoardColumn title="Open" />
+        <BoardColumn title="In Progress" />
+        <BoardColumn title="Review" />
+        <BoardColumn title="Done" />
       </div>
     </>
   )
