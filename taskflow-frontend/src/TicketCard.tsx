@@ -1,13 +1,19 @@
+export enum Priority {
+    Low = "low",
+    Medium = "medium",
+    High = "high"
+}
+
 export interface TicketCardProps{
     id : number
     title: string
-    priority: ("low" | "medium" | "high")
+    priority: Priority
 }
 
 const priorityStyle = {
-    low: "bg-green-500 rounded text-sm p-2",
-    medium: "bg-yellow-500 rounded text-sm p-2",
-    high: "bg-red-500 rounded text-sm p-2"
+    [Priority.Low]: "bg-green-500 rounded text-sm p-2",
+    [Priority.Medium]: "bg-yellow-500 rounded text-sm p-2",
+    [Priority.High]: "bg-red-500 rounded text-sm p-2"
 }
 
 function TicketCard({ id, title, priority }: TicketCardProps){
