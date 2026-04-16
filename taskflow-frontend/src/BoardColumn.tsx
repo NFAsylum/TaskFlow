@@ -1,6 +1,9 @@
-import TicketCard, { type TicketCardProps } from './TicketCard'
+import { type Ticket, Status, nextStatus } from './types'
+import TicketCard from './TicketCard'
 
-function BoardColumn({ title, tickets }: { title: string, tickets: TicketCardProps[] }){
+function BoardColumn({ title, tickets, onMoveTicket }: {
+    title: string, tickets: Ticket[], onMoveTicket: (id: number, newStatus: Status) => void
+    }){
     return (
         <div className="bg-blue-600 text-white">
             <div className="bg-blue-800 py-2 text-center font-bold">{title}</div>
@@ -8,9 +11,8 @@ function BoardColumn({ title, tickets }: { title: string, tickets: TicketCardPro
                 {tickets.map((ticket) => (
                         <TicketCard
                         key={ticket.id}
-                        id={ticket.id}
-                        title={ticket.title}
-                        priority={ticket.priority} />
+                        {...ticket}
+                        onMove={() => onMoveTicket(ticket.id, nextStatus(ticket.status))} />
                 ))}
             </div>
         </div>

@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import {type TicketCardProps, Priority} from './TicketCard'
+import {Priority, Status, type Ticket} from './types'
 import BoardColumn from './BoardColumn'
 
 function App() {
   const title = "Ticket Board"
 
-  const [tickets, setTickets] = useState<TicketCardProps[]>([])
+  const [tickets, setTickets] = useState<Ticket[]>([])
 
-  function addTicket(newTicket: TicketCardProps){
+  function addTicket(newTicket: Ticket){
       setTickets([...tickets, newTicket])
   }
 
@@ -15,8 +15,13 @@ function App() {
     addTicket({
       id: tickets.length+1,
       title: `Task ${tickets.length+1}`,
-      priority:Object.values(Priority)[Math.floor(Math.random() * Object.values(Priority).length)]
+      priority:Object.values(Priority)[Math.floor(Math.random() * Object.values(Priority).length)],
+      status:Status.Open
       })
+  }
+
+  function moveTicket(id: number, newStatus: Status){
+    setTickets(tickets.map((t) => t.id === id ? { ...t, status: newStatus } : t ))
   }
 
   return (
@@ -29,10 +34,10 @@ function App() {
       </div>
       <button onClick={addRandomTicket}>Add ticket</button>
       <div className="flex">
-        <BoardColumn title="Open" tickets={tickets} />
-        <BoardColumn title="In Progress" tickets={tickets} />
-        <BoardColumn title="Review" tickets={tickets} />
-        <BoardColumn title="Done" tickets={tickets} />
+        <BoardColumn title="Open" tickets={tickets.filter((t) => t.status == Status.Open)} onMoveTicket={moveTicket} />
+        <BoardColumn title="In Progress" tickets={tickets.filter((t) => t.status == Status.InProgress)} onMoveTicket={moveTicket} />
+        <BoardColumn title="Review" tickets={tickets.filter((t) => t.status == Status.Review)} onMoveTicket={moveTicket} />
+        <BoardColumn title="Done" tickets={tickets.filter((t) => t.status == Status.Done)} onMoveTicket={moveTicket} />
       </div>
     </>
   )
