@@ -1,5 +1,7 @@
+import { DndContext, type DragEndEvent } from '@dnd-kit/core'
+
 import { useState } from 'react'
-import { Status, type Priority, type Ticket } from './types'
+import { Status, StatusTitle, type Priority, type Ticket } from './types'
 import BoardColumn from './BoardColumn'
 import TicketForm from './TicketForm'
 
@@ -46,41 +48,58 @@ function App() {
     )
   }
 
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+
+    if (!over) return
+
+    const ticketId = active.id as number
+    const newStatus = over.id as Status
+
+    moveTicket(ticketId, newStatus)
+  }
+
   return (
     <>
       <div className="bg-blue-950 p-8 text-white text-2xl">{title}</div>
       <div className="bg-gray-900 p-2 text-gray-400 text-2xl">by Marco</div>
       <TicketForm onCreate={createTicket} />
-      <div className="flex">
-        <BoardColumn
-          title="Open"
-          tickets={tickets.filter((t) => t.status == Status.Open)}
-          onMoveTicket={moveTicket}
-          onDeleteTicket={deleteTicket}
-          onEditTicket={editTicket}
-        />
-        <BoardColumn
-          title="In Progress"
-          tickets={tickets.filter((t) => t.status == Status.InProgress)}
-          onMoveTicket={moveTicket}
-          onDeleteTicket={deleteTicket}
-          onEditTicket={editTicket}
-        />
-        <BoardColumn
-          title="Review"
-          tickets={tickets.filter((t) => t.status == Status.Review)}
-          onMoveTicket={moveTicket}
-          onDeleteTicket={deleteTicket}
-          onEditTicket={editTicket}
-        />
-        <BoardColumn
-          title="Done"
-          tickets={tickets.filter((t) => t.status == Status.Done)}
-          onMoveTicket={moveTicket}
-          onDeleteTicket={deleteTicket}
-          onEditTicket={editTicket}
-        />
-      </div>
+      <DndContext onDragEnd={handleDragEnd}>
+        <div className="flex">
+          <BoardColumn
+            title={StatusTitle[Status.Open]}
+            status={Status.Open}
+            tickets={tickets.filter((t) => t.status == Status.Open)}
+            onMoveTicket={moveTicket}
+            onDeleteTicket={deleteTicket}
+            onEditTicket={editTicket}
+          />
+          <BoardColumn
+            title={StatusTitle[Status.InProgress]}
+            status={Status.InProgress}
+            tickets={tickets.filter((t) => t.status == Status.InProgress)}
+            onMoveTicket={moveTicket}
+            onDeleteTicket={deleteTicket}
+            onEditTicket={editTicket}
+          />
+          <BoardColumn
+            title={StatusTitle[Status.Review]}
+            status={Status.Review}
+            tickets={tickets.filter((t) => t.status == Status.Review)}
+            onMoveTicket={moveTicket}
+            onDeleteTicket={deleteTicket}
+            onEditTicket={editTicket}
+          />
+          <BoardColumn
+            title={StatusTitle[Status.Done]}
+            status={Status.Done}
+            tickets={tickets.filter((t) => t.status == Status.Done)}
+            onMoveTicket={moveTicket}
+            onDeleteTicket={deleteTicket}
+            onEditTicket={editTicket}
+          />
+        </div>
+      </DndContext>
     </>
   )
 }

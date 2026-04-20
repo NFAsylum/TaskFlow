@@ -36,7 +36,7 @@ function TicketForm({ onCreate }: TicketFormProps) {
         <div>
           <label className="font-bold pr-4">Priority</label>
           <select
-            className="bg-gray-200 rounded-4xl"
+            className="bg-gray-200 rounded-4xl cursor-pointer"
             value={priority}
             onChange={(e) => setPriority(e.target.value as Priority)}
           >
@@ -51,7 +51,7 @@ function TicketForm({ onCreate }: TicketFormProps) {
         <div>
           <label className="font-bold pr-4">Status</label>
           <select
-            className="bg-gray-200 rounded-4xl"
+            className="bg-gray-200 rounded-4xl cursor-pointer"
             value={status}
             onChange={(e) => setStatus(e.target.value as Status)}
           >
@@ -63,7 +63,10 @@ function TicketForm({ onCreate }: TicketFormProps) {
           </select>
         </div>
 
-        <button className="bg-gray-400 m-2 p-3 rounded-2xl" type="submit">
+        <button
+          className="bg-gray-400 m-2 p-3 rounded-2xl cursor-pointer"
+          type="submit"
+        >
           Submit
         </button>
       </form>

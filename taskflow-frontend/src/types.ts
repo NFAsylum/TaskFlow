@@ -22,6 +22,13 @@ export function nextStatus(currentStatus: Status): Status {
   return statusOrder[Math.min(index + 1, statusOrder.length - 1)]
 }
 
+export const StatusTitle = {
+  [Status.Open]: 'Open',
+  [Status.InProgress]: 'In Progress',
+  [Status.Review]: 'Review',
+  [Status.Done]: 'Done',
+} as const
+
 export interface Ticket {
   id: number
   title: string

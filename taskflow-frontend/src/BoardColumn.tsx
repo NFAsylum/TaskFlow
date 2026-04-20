@@ -1,14 +1,18 @@
+import { useDroppable } from '@dnd-kit/core'
+
 import { type Ticket, Priority, Status, nextStatus } from './types'
 import TicketCard from './TicketCard'
 
 function BoardColumn({
   title,
+  status,
   tickets,
   onMoveTicket,
   onDeleteTicket,
   onEditTicket,
 }: {
   title: string
+  status: Status
   tickets: Ticket[]
   onMoveTicket: (id: number, newStatus: Status) => void
   onDeleteTicket: (id: number) => void
@@ -19,8 +23,10 @@ function BoardColumn({
     newStatus: Status,
   ) => void
 }) {
+  const { setNodeRef } = useDroppable({ id: status })
+
   return (
-    <div className="bg-blue-600 text-white">
+    <div ref={setNodeRef} className="bg-blue-600 text-white">
       <div className="bg-blue-800 py-2 text-center font-bold">{title}</div>
       <div className="mx-4 flex flex-col gap-4 py-4">
         {tickets.map((ticket) => (
