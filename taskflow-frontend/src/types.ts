@@ -31,4 +31,5 @@ export interface Ticket{
 
 export interface TicketCardProps extends Ticket{
     onMove: () => void
+    onDelete: () => void
 }

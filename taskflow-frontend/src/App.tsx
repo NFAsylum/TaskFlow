@@ -25,6 +25,10 @@ function App() {
     setTickets(tickets.map((t) => t.id === id ? { ...t, status: newStatus } : t ))
   }
 
+  function deleteTicket(id: number){
+    setTickets(tickets.filter((t) => t.id != id))
+  }
+
   return (
     <>
       <div className="bg-blue-950 p-8 text-white text-2xl">
@@ -35,10 +39,18 @@ function App() {
       </div>
       <TicketForm onCreate={createTicket} />
       <div className="flex">
-        <BoardColumn title="Open" tickets={tickets.filter((t) => t.status == Status.Open)} onMoveTicket={moveTicket} />
-        <BoardColumn title="In Progress" tickets={tickets.filter((t) => t.status == Status.InProgress)} onMoveTicket={moveTicket} />
-        <BoardColumn title="Review" tickets={tickets.filter((t) => t.status == Status.Review)} onMoveTicket={moveTicket} />
-        <BoardColumn title="Done" tickets={tickets.filter((t) => t.status == Status.Done)} onMoveTicket={moveTicket} />
+        <BoardColumn title="Open" tickets={tickets.filter((t) => t.status == Status.Open)}
+        onMoveTicket={moveTicket}
+        onDeleteTicket={deleteTicket} />
+        <BoardColumn title="In Progress" tickets={tickets.filter((t) => t.status == Status.InProgress)}
+        onMoveTicket={moveTicket}
+        onDeleteTicket={deleteTicket} />
+        <BoardColumn title="Review" tickets={tickets.filter((t) => t.status == Status.Review)}
+        onMoveTicket={moveTicket}
+        onDeleteTicket={deleteTicket} />
+        <BoardColumn title="Done" tickets={tickets.filter((t) => t.status == Status.Done)}
+        onMoveTicket={moveTicket}
+        onDeleteTicket={deleteTicket} />
       </div>
     </>
   )

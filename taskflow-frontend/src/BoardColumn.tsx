@@ -1,8 +1,9 @@
 import { type Ticket, Status, nextStatus } from './types'
 import TicketCard from './TicketCard'
 
-function BoardColumn({ title, tickets, onMoveTicket }: {
-    title: string, tickets: Ticket[], onMoveTicket: (id: number, newStatus: Status) => void
+function BoardColumn({ title, tickets, onMoveTicket, onDeleteTicket }: {
+    title: string, tickets: Ticket[], onMoveTicket: (id: number, newStatus: Status) => void,
+    onDeleteTicket: (id: number) => void
     }){
     return (
         <div className="bg-blue-600 text-white">
@@ -12,7 +13,8 @@ function BoardColumn({ title, tickets, onMoveTicket }: {
                         <TicketCard
                         key={ticket.id}
                         {...ticket}
-                        onMove={() => onMoveTicket(ticket.id, nextStatus(ticket.status))} />
+                        onMove={() => onMoveTicket(ticket.id, nextStatus(ticket.status))}
+                        onDelete={() => onDeleteTicket(ticket.id)} />
                 ))}
             </div>
         </div>
