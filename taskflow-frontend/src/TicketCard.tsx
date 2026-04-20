@@ -1,3 +1,5 @@
+import { useDraggable } from '@dnd-kit/core'
+
 import { useState } from 'react'
 import { Priority, Status, type TicketCardProps } from './types'
 
@@ -22,9 +24,30 @@ function TicketCard({
   const [editPriority, setEditPriority] = useState<Priority>(priority)
   const [editStatus, setEditStatus] = useState<Status>(status)
 
+  const { setNodeRef, listeners, attributes, transform } = useDraggable({ id })
+
   return (
-    <div className="bg-yellow-100 p-5 rounded-lg border border-amber-400">
-      <button className="bg-red-500 p-1 rounded-2xl" onClick={onDelete}>
+    <div
+      ref={setNodeRef}
+      style={{
+        transform: transform
+          ? `translate(${transform.x}px, ${transform.y}px)`
+          : undefined,
+      }}
+      className="bg-yellow-100 p-5 rounded-lg border border-amber-400"
+    >
+      <h3
+        {...listeners}
+        {...attributes}
+        className="text-gray-100 bg-blue-950 cursor-grab"
+      >
+        {id}
+      </h3>
+
+      <button
+        className="bg-red-500 p-1 rounded-2xl cursor-pointer"
+        onClick={onDelete}
+      >
         X
       </button>
       {isEditing ? (
@@ -43,7 +66,7 @@ function TicketCard({
           <div>
             <label className="font-bold pr-4">Priority</label>
             <select
-              className="bg-gray-200 rounded-4xl"
+              className="bg-gray-200 rounded-4xl cursor-pointer"
               value={editPriority}
               onChange={(e) => setEditPriority(e.target.value as Priority)}
             >
@@ -58,7 +81,7 @@ function TicketCard({
           <div>
             <label className="font-bold pr-4">Status</label>
             <select
-              className="bg-gray-200 rounded-4xl"
+              className="bg-gray-200 rounded-4xl cursor-pointer"
               value={editStatus}
               onChange={(e) => setEditStatus(e.target.value as Status)}
             >
@@ -70,7 +93,7 @@ function TicketCard({
             </select>
           </div>
           <button
-            className="bg-purple-300 p-1 rounded-2xl"
+            className="bg-purple-300 p-1 rounded-2xl cursor-pointer"
             onClick={() => {
               onEdit(editTitle, editPriority, editStatus)
               setIsEditing(false)
@@ -84,7 +107,7 @@ function TicketCard({
           <p className="text-gray-800 p-2">{title}</p>
           <span className={priorityStyle[priority]}>{priority}</span>
           <button
-            className="bg-purple-300 p-1 rounded-2xl"
+            className="bg-purple-300 p-1 rounded-2xl cursor-pointer"
             onClick={() => {
               setIsEditing(true)
             }}
@@ -93,8 +116,8 @@ function TicketCard({
           </button>
         </>
       )}
-      <h3 className="text-gray-800">{id}</h3>
-      <button className="bg-gray-400" onClick={onMove}>
+
+      <button className="bg-gray-400 cursor-pointer" onClick={onMove}>
         {'<>'}
       </button>
     </div>
