@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import {Priority, Status, type Ticket} from './types'
+import { Status, type Priority, type Ticket } from './types'
 import BoardColumn from './BoardColumn'
+import TicketForm from './TicketForm'
 
 function App() {
   const title = "Ticket Board"
@@ -11,12 +12,12 @@ function App() {
       setTickets([...tickets, newTicket])
   }
 
-  function addRandomTicket(){
+  function createTicket(title: string, priority: Priority, status: Status){
     addTicket({
       id: tickets.length+1,
-      title: `Task ${tickets.length+1}`,
-      priority:Object.values(Priority)[Math.floor(Math.random() * Object.values(Priority).length)],
-      status:Status.Open
+      title: title,
+      priority: priority,
+      status: status
       })
   }
 
@@ -32,7 +33,7 @@ function App() {
       <div className="bg-gray-900 p-2 text-gray-400 text-2xl">
         by Marco
       </div>
-      <button onClick={addRandomTicket}>Add ticket</button>
+      <TicketForm onCreate={createTicket} />
       <div className="flex">
         <BoardColumn title="Open" tickets={tickets.filter((t) => t.status == Status.Open)} onMoveTicket={moveTicket} />
         <BoardColumn title="In Progress" tickets={tickets.filter((t) => t.status == Status.InProgress)} onMoveTicket={moveTicket} />
