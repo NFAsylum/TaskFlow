@@ -1,0 +1,17 @@
+## Build
+bin/
+obj/
+
+## Database
+*.db
+*.db-shm
+*.db-val
+
+## IDE
+.idea/
+.vs/
+*.user
+
+## OS
+.DS_Store
+Thumbs.db
