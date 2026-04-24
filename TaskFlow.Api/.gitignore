@@ -5,7 +5,7 @@ obj/
 ## Database
 *.db
 *.db-shm
-*.db-val
+*.db-wal
 
 ## IDE
 .idea/
