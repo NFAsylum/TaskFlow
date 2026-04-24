@@ -25,7 +25,7 @@ public static class MoveTicket
             ticket.Status = request.Status;
             await db.SaveChangesAsync();
             
-            return Results.Ok();
+            return Results.Ok(ticket);
         });
     }
 }
