@@ -11,10 +11,19 @@ import {
 export function useTickets() {
   const [tickets, setTickets] = useState<Ticket[]>([])
 
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+
   useEffect(() => {
     async function loadTickets() {
-      const data = await listTickets()
-      setTickets(data)
+      try {
+        const data = await listTickets()
+        setTickets(data)
+      } catch (error) {
+        setError(`Failed to load tickets: ${error}`)
+      } finally {
+        setLoading(false)
+      }
     }
     loadTickets()
   }, [])
@@ -102,6 +111,8 @@ export function useTickets() {
 
   return {
     tickets,
+    loading,
+    error,
     handleAddTicket,
     handleMoveTicket,
     handleDeleteTicket,

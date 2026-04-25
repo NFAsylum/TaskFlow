@@ -9,11 +9,16 @@ import { useAuth } from './AuthContext'
 function App() {
   const {
     tickets,
+    loading,
+    error,
     handleAddTicket,
     handleMoveTicket,
     handleDeleteTicket,
     handleEditTicket,
   } = useTickets()
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>{error}</div>
 
   const title = 'Ticket Board'
 
