@@ -10,6 +10,16 @@ TaskFlow is a Kanban board for task management via tickets. TaskFlow enables fas
 
 **Auth:** JWT + BCrypt
 
+## Screenshots
+
+### Light mode
+
+![TaskFlow Light](screenshot-light.png)
+
+### Dark mode
+
+![TaskFlow Dark](screenshot-dark.png)
+
 ## Setup
 
 ### Backend
