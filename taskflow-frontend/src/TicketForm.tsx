@@ -20,23 +20,22 @@ function TicketForm({ onCreate }: TicketFormProps) {
   }
 
   return (
-    <div className="m-2 p-4 border-4 rounded-2xl bg-blue-100">
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="m-2 p-4 border rounded-2xl bg-white dark:bg-gray-800 dark:text-white border-gray-200 dark:border-gray-700 max-w-md mx-auto shadow-sm">
+      <form className="space-y-3" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-1">
           <label className="font-bold pr-4">Task title</label>
           <input
-            className="bg-gray-200 rounded-4xl"
+            className="bg-gray-200 dark:bg-gray-600 rounded-lg px-2"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
           />
         </div>
-
-        <div>
+        <div className="flex flex-col gap-1">
           <label className="font-bold pr-4">Priority</label>
           <select
-            className="bg-gray-200 rounded-4xl cursor-pointer"
+            className="bg-gray-200 dark:bg-gray-600 rounded-lg cursor-pointer px-2"
             value={priority}
             onChange={(e) => setPriority(e.target.value as Priority)}
           >
@@ -48,10 +47,10 @@ function TicketForm({ onCreate }: TicketFormProps) {
           </select>
         </div>
 
-        <div>
+        <div className="flex flex-col gap-1">
           <label className="font-bold pr-4">Status</label>
           <select
-            className="bg-gray-200 rounded-4xl cursor-pointer"
+            className="bg-gray-200 dark:bg-gray-600 rounded-lg cursor-pointer px-2"
             value={status}
             onChange={(e) => setStatus(e.target.value as Status)}
           >
@@ -64,7 +63,7 @@ function TicketForm({ onCreate }: TicketFormProps) {
         </div>
 
         <button
-          className="bg-gray-400 m-2 p-3 rounded-2xl cursor-pointer"
+          className="bg-blue-600 text-white dark:text-gray-200 p-2 px-4 rounded-lg cursor-pointer"
           type="submit"
         >
           Submit

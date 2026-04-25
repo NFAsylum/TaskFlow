@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { loginUser, registerUser } from './api'
 import { useAuth } from './AuthContext'
+import { useThemes } from './useThemes'
 
 function LoginPage() {
   const [isRegistering, setIsRegistering] = useState<boolean>(false)
@@ -14,6 +15,8 @@ function LoginPage() {
   const navigate = useNavigate()
 
   const { login } = useAuth()
+
+  const { toggleDarkMode } = useThemes()
 
   async function handleRegister(name: string, email: string, password: string) {
     try {
@@ -56,14 +59,20 @@ function LoginPage() {
   }
 
   return (
-    <div>
-      <div className="size-100 bg-blue-950 rounded-4xl content-center">
-        <form onSubmit={handleSubmit}>
+    <div className="bg-gray-100 dark:bg-gray-950 min-h-screen flex items-center justify-center">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 w-96 space-y-4 shadow-sm border border-gray-200 dark:border-gray-700">
+        <button
+          className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white p-2 rounded-lg cursor-pointer text-sm self-end"
+          onClick={toggleDarkMode}
+        >
+          Theme
+        </button>
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {isRegistering ? (
-            <div>
+            <div className="flex flex-col">
               <label className="font-bold pr-4">Username</label>
               <input
-                className="bg-gray-200 rounded-4xl"
+                className="bg-gray-200 rounded-4xl px-2"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -74,10 +83,10 @@ function LoginPage() {
             <></>
           )}
 
-          <div>
+          <div className="flex flex-col">
             <label className="font-bold pr-4">Email</label>
             <input
-              className="bg-gray-200 rounded-4xl"
+              className="bg-gray-200 rounded-4xl px-2"
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -85,10 +94,10 @@ function LoginPage() {
             />
           </div>
 
-          <div>
+          <div className="flex flex-col">
             <label className="font-bold pr-4">Password</label>
             <input
-              className="bg-gray-200 rounded-4xl"
+              className="bg-gray-200 rounded-4xl px-2"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -97,10 +106,10 @@ function LoginPage() {
           </div>
 
           {isRegistering ? (
-            <div>
+            <div className="flex flex-col">
               <label className="font-bold pr-4">Type password again</label>
               <input
-                className="bg-gray-200 rounded-4xl"
+                className="bg-gray-200 rounded-4xl px-2"
                 type="password"
                 value={passwordConfirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
@@ -119,7 +128,7 @@ function LoginPage() {
           )}
 
           <button
-            className="bg-gray-400 m-2 p-3 rounded-2xl cursor-pointer"
+            className="bg-blue-600 text-white p-2 px-4 rounded-lg cursor-pointer w-full"
             type="submit"
           >
             Submit
@@ -129,18 +138,22 @@ function LoginPage() {
         {isRegistering ? (
           <div>
             <button
-              className="bg-blue-300 p-2 rounded-2xl"
+              className="text-blue-600 dark:text-blue-400 underline cursor-pointer p-2"
               onClick={() => setIsRegistering(false)}
             >
               Login
             </button>
-            <button className="bg-gray-800 p-2 rounded-2xl">Register</button>
+            <button className="bg-gray-200 dark:bg-gray-700 text-gray-500 p-2 rounded-lg">
+              Register
+            </button>
           </div>
         ) : (
           <div>
-            <button className="bg-gray-800 p-2 rounded-2xl">Login</button>
+            <button className="bg-gray-200 dark:bg-gray-700 text-gray-500 p-2 rounded-lg">
+              Login
+            </button>
             <button
-              className="bg-blue-300 p-2 rounded-2xl"
+              className="text-blue-600 dark:text-blue-400 underline cursor-pointer p-2"
               onClick={() => setIsRegistering(true)}
             >
               Register

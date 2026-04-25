@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { Priority, Status, type TicketCardProps } from './types'
 
 const priorityStyle = {
-  [Priority.Low]: 'bg-green-500 rounded text-sm p-2',
-  [Priority.Medium]: 'bg-yellow-500 rounded text-sm p-2',
-  [Priority.High]: 'bg-red-500 rounded text-sm p-2',
+  [Priority.Low]: 'bg-green-500 dark:bg-green-600 rounded text-sm p-2',
+  [Priority.Medium]: 'bg-yellow-500 dark:bg-yellow-600 rounded text-sm p-2',
+  [Priority.High]: 'bg-red-500 dark:bg-red-600 rounded text-sm p-2',
 }
 
 function TicketCard({
@@ -34,28 +34,26 @@ function TicketCard({
           ? `translate(${transform.x}px, ${transform.y}px)`
           : undefined,
       }}
-      className="bg-yellow-100 p-5 rounded-lg border border-amber-400"
+      className="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"
     >
-      <h3
-        {...listeners}
-        {...attributes}
-        className="text-gray-100 bg-blue-950 cursor-grab"
-      >
-        {id}
-      </h3>
+      <div className="flex flex-col items-center pb-4">
+        <h3
+          {...listeners}
+          {...attributes}
+          className="textx-gray-400 bg-gray-100 dark:bg-gray-700 cursor-grab text-center text-sm py-1 rounded-t-lg w-30"
+        >
+          {id}
+        </h3>
+      </div>
 
-      <button
-        className="bg-red-500 p-1 rounded-2xl cursor-pointer"
-        onClick={onDelete}
-      >
-        X
-      </button>
       {isEditing ? (
-        <>
+        <div className="space-y-2">
           <div>
-            <label className="font-bold pr-4">Task title</label>
+            <label className="font-bold text-gray-600 pr-4 content-center">
+              Task title
+            </label>
             <input
-              className="bg-gray-200 rounded-4xl"
+              className="bg-gray-200 dark:bg-gray-600 rounded-4xl"
               type="text"
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
@@ -64,9 +62,9 @@ function TicketCard({
           </div>
 
           <div>
-            <label className="font-bold pr-4">Priority</label>
+            <label className="font-bold text-gray-600 pr-4">Priority</label>
             <select
-              className="bg-gray-200 rounded-4xl cursor-pointer"
+              className="bg-gray-200 dark:bg-gray-600 rounded-4xl cursor-pointer"
               value={editPriority}
               onChange={(e) => setEditPriority(e.target.value as Priority)}
             >
@@ -79,9 +77,9 @@ function TicketCard({
           </div>
 
           <div>
-            <label className="font-bold pr-4">Status</label>
+            <label className="font-bold text-gray-600 pr-4">Status</label>
             <select
-              className="bg-gray-200 rounded-4xl cursor-pointer"
+              className="bg-gray-200 dark:bg-gray-600 rounded-4xl cursor-pointer"
               value={editStatus}
               onChange={(e) => setEditStatus(e.target.value as Status)}
             >
@@ -92,34 +90,56 @@ function TicketCard({
               ))}
             </select>
           </div>
-          <button
-            className="bg-purple-300 p-1 rounded-2xl cursor-pointer"
-            onClick={() => {
-              onEdit(editTitle, editPriority, editStatus)
-              setIsEditing(false)
-            }}
-          >
-            Save
-          </button>
-        </>
+        </div>
       ) : (
         <>
-          <p className="text-gray-800 p-2">{title}</p>
+          <p className="text-gray-800 dark:text-gray-100 p-2 text-lg font-semibold text-center">
+            {title}
+          </p>
           <span className={priorityStyle[priority]}>{priority}</span>
-          <button
-            className="bg-purple-300 p-1 rounded-2xl cursor-pointer"
-            onClick={() => {
-              setIsEditing(true)
-            }}
-          >
-            Edit
-          </button>
         </>
       )}
 
-      <button className="bg-gray-400 cursor-pointer" onClick={onMove}>
-        {'<>'}
-      </button>
+      <div className="flex gap-2 mt-3">
+        {isEditing ? (
+          <>
+            <button
+              className="bg-blue-600 text-white p-1 px-3 rounded-2xl cursor-pointer text-sm"
+              onClick={() => {
+                onEdit(editTitle, editPriority, editStatus)
+                setIsEditing(false)
+              }}
+            >
+              Save
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              className="bg-blue-600 text-white p-1 px-3 rounded-2xl cursor-pointer text-sm"
+              onClick={() => {
+                setIsEditing(true)
+              }}
+            >
+              Edit
+            </button>
+          </>
+        )}
+
+        <button
+          className="bg-gray-400 dark:bg-gray-600 text-white p-1 rounded-2xl px-3 cursor-pointer text-sm"
+          onClick={onMove}
+        >
+          Move
+        </button>
+
+        <button
+          className="bg-red-600 dark:bg-red-900 text-white p-1 px-3 rounded-2xl cursor-pointer text-sm"
+          onClick={onDelete}
+        >
+          Delete
+        </button>
+      </div>
     </div>
   )
 }

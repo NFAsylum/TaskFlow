@@ -26,8 +26,13 @@ function BoardColumn({
   const { setNodeRef } = useDroppable({ id: status })
 
   return (
-    <div ref={setNodeRef} className="bg-blue-600 text-white">
-      <div className="bg-blue-800 py-2 text-center font-bold">{title}</div>
+    <div
+      ref={setNodeRef}
+      className="bg-gray-200 dark:bg-gray-900 flex-1 h-screen"
+    >
+      <div className="bg-gray-300 dark:bg-gray-800 text-gray-700 dark:text-gray-200 py-2 text-center font-bold">
+        {title}
+      </div>
       <div className="mx-4 flex flex-col gap-4 py-4">
         {tickets.map((ticket) => (
           <TicketCard

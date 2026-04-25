@@ -5,6 +5,8 @@ import BoardColumn from './BoardColumn'
 import TicketForm from './TicketForm'
 import { useTickets } from './useTickets'
 import { useAuth } from './AuthContext'
+import { useThemes } from './useThemes'
+import { useNavigate } from 'react-router-dom'
 
 function App() {
   const {
@@ -17,12 +19,14 @@ function App() {
     handleEditTicket,
   } = useTickets()
 
+  const { userName, logout } = useAuth()
+  const { toggleDarkMode } = useThemes()
+  const navigate = useNavigate()
+
   if (loading) return <div>Loading...</div>
   if (error) return <div>{error}</div>
 
   const title = 'Ticket Board'
-
-  const { userName } = useAuth()
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
@@ -36,15 +40,31 @@ function App() {
   }
 
   return (
-    <>
-      <div className="bg-blue-950 p-8 text-white text-2xl">
+    <div className="bg-gray-100 dark:bg-gray-950 min-h-screen">
+      <div className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700 p-8 text-gray-800 dark:text-white text-2xl flex justify-between items-center">
         <h6>{title}</h6>
-        <h6>User: {userName}</h6>
+        <div className="flex items-center gap-4">
+          <span className="text-sm">{userName}</span>
+          <button
+            className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white rounded-lg self-end p-2 cursor-pointer"
+            onClick={toggleDarkMode}
+          >
+            Theme
+          </button>
+          <button
+            className="bg-red-600 text-white p-2 rounded-lg cursor-pointer text-sm"
+            onClick={() => {
+              logout()
+              navigate('/login')
+            }}
+          >
+            Logout
+          </button>
+        </div>
       </div>
-      <div className="bg-gray-900 p-2 text-gray-400 text-2xl">by Marco</div>
       <TicketForm onCreate={handleAddTicket} />
       <DndContext onDragEnd={handleDragEnd}>
-        <div className="flex">
+        <div className="flex flex-col md:flex-row gap-y-2 min-h-screen">
           <BoardColumn
             title={StatusTitle[Status.Open]}
             status={Status.Open}
@@ -79,7 +99,7 @@ function App() {
           />
         </div>
       </DndContext>
-    </>
+    </div>
   )
 }
 
