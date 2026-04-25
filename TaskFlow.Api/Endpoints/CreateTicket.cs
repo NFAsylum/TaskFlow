@@ -7,9 +7,9 @@ namespace TaskFlow.Api.Endpoints;
 
 public static class CreateTicket
 {
-    public static void MapCreateTicketEndpoints(this IEndpointRouteBuilder app)
+    public static void MapCreateTicketEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/tickets", async (AppDbContext db, AddTicketRequest ticketRequest) =>
+        app.MapPost(Endpoints.TicketsGeneralEndpoint, async (AppDbContext db, AddTicketRequest ticketRequest) =>
         {
             if (!TicketUtils.IsValidStatus(ticketRequest.Status))
             {
