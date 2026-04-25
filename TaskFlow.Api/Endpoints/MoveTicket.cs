@@ -26,6 +26,6 @@ public static class MoveTicket
             await db.SaveChangesAsync();
             
             return Results.Ok(ticket);
-        });
+        }).RequireAuthorization();
     }
 }

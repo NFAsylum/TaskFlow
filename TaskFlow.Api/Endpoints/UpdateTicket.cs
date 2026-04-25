@@ -33,6 +33,6 @@ public static class UpdateTicket
             await db.SaveChangesAsync();
             
             return Results.Ok();
-        });
+        }).RequireAuthorization();
     }
 }

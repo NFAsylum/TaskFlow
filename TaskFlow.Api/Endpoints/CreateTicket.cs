@@ -31,6 +31,6 @@ public static class CreateTicket
             await db.SaveChangesAsync();
             
             return Results.Created($"/api/tickets/{newTicket.Id}", newTicket);
-        });
+        }).RequireAuthorization();
     }
 }

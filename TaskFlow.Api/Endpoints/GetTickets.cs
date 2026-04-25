@@ -10,6 +10,6 @@ public static class GetTickets
         app.MapGet(Endpoints.TicketsGeneralEndpoint, async (AppDbContext db) =>
         {
             return Results.Ok(await db.Tickets.ToListAsync());
-        });
+        }).RequireAuthorization();
     }
 }

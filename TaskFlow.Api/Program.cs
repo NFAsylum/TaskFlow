@@ -1,4 +1,7 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TaskFlow.Api.Data;
 using TaskFlow.Api.Endpoints;
 using TaskFlow.Api.Utils;
@@ -40,6 +43,20 @@ if (string.IsNullOrEmpty(jwtKey))
 
 builder.Services.AddSingleton(new JwtSettings(jwtKey));
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 WebApplication app = builder.Build();
 
 app.UseCors();
@@ -51,6 +68,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapCreateTicketEndpoint();
 app.MapDeleteTicketEndpoint();

@@ -17,6 +17,6 @@ public static class GetTicketById
             }
             
             return Results.Ok(ticket);
-        });
+        }).RequireAuthorization();
     }
 }

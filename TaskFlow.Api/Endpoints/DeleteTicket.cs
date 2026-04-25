@@ -20,6 +20,6 @@ public static class DeleteTicket
             await db.SaveChangesAsync();
             
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
     }
 }
