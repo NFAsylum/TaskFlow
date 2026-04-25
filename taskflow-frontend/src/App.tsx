@@ -11,9 +11,12 @@ import {
   moveTicket,
   updateTicket,
 } from './api'
+import { useAuth } from './AuthContext'
 
 function App() {
   const title = 'Ticket Board'
+
+  const { userName } = useAuth()
 
   const [tickets, setTickets] = useState<Ticket[]>([])
 
@@ -119,7 +122,10 @@ function App() {
 
   return (
     <>
-      <div className="bg-blue-950 p-8 text-white text-2xl">{title}</div>
+      <div className="bg-blue-950 p-8 text-white text-2xl">
+        <h6>{title}</h6>
+        <h6>{userName}</h6>
+      </div>
       <div className="bg-gray-900 p-2 text-gray-400 text-2xl">by Marco</div>
       <TicketForm onCreate={handleAddTicket} />
       <DndContext onDragEnd={handleDragEnd}>

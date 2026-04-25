@@ -33,9 +33,9 @@ public static class LoginUser
 
             Claim[] claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim("sub", user.Id.ToString()),
+                new Claim("name", user.Name),
+                new Claim("email", user.Email)
             };
             
             SymmetricSecurityKey key = new SymmetricSecurityKey(
