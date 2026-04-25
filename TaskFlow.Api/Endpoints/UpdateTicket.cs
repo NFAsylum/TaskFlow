@@ -7,9 +7,9 @@ namespace TaskFlow.Api.Endpoints;
 
 public static class UpdateTicket
 {
-    public static void MapUpdateTicketEndpoints(this IEndpointRouteBuilder app)
+    public static void MapUpdateTicketEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/tickets/{id}", async (AppDbContext db, int id, UpdateTicketRequest ticket) =>
+        app.MapPut(Endpoints.TicketsWithIdEndpoint, async (AppDbContext db, int id, UpdateTicketRequest ticket) =>
         {
             if (!TicketUtils.IsValidStatus(ticket.Status))
             {
@@ -33,6 +33,6 @@ public static class UpdateTicket
             await db.SaveChangesAsync();
             
             return Results.Ok();
-        });
+        }).RequireAuthorization();
     }
 }

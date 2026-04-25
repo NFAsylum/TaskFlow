@@ -1,110 +1,28 @@
 import { DndContext, type DragEndEvent } from '@dnd-kit/core'
 
-import { useState, useEffect } from 'react'
-import { Status, StatusTitle, type Priority, type Ticket } from './types'
+import { Status, StatusTitle } from './types'
 import BoardColumn from './BoardColumn'
 import TicketForm from './TicketForm'
-import {
-  createTicket,
-  deleteTicket,
-  listTickets,
-  moveTicket,
-  updateTicket,
-} from './api'
+import { useTickets } from './useTickets'
+import { useAuth } from './AuthContext'
 
 function App() {
+  const {
+    tickets,
+    loading,
+    error,
+    handleAddTicket,
+    handleMoveTicket,
+    handleDeleteTicket,
+    handleEditTicket,
+  } = useTickets()
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>{error}</div>
+
   const title = 'Ticket Board'
 
-  const [tickets, setTickets] = useState<Ticket[]>([])
-
-  useEffect(() => {
-    async function loadTickets() {
-      const data = await listTickets()
-      setTickets(data)
-    }
-    loadTickets()
-  }, [])
-
-  async function handleAddTicket(
-    title: string,
-    priority: Priority,
-    status: Status,
-  ) {
-    try {
-      const newTicket = await createTicket({
-        id: tickets.length + 1,
-        title: title,
-        priority: priority,
-        status: status,
-      })
-
-      setTickets([...tickets, newTicket])
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  async function handleMoveTicket(id: number, newStatus: Status) {
-    try {
-      const movedTicket = await moveTicket(id, newStatus)
-
-      setTickets(
-        tickets.map((t) =>
-          t.id === id
-            ? {
-                ...t,
-                title: movedTicket.title,
-                priority: movedTicket.priority,
-                status: movedTicket.status,
-              }
-            : t,
-        ),
-      )
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  async function handleDeleteTicket(id: number) {
-    try {
-      await deleteTicket(id)
-
-      setTickets(tickets.filter((t) => t.id !== id))
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  async function handleEditTicket(
-    id: number,
-    newTitle: string,
-    newPriority: Priority,
-    newStatus: Status,
-  ) {
-    try {
-      await updateTicket({
-        id: id,
-        title: newTitle,
-        priority: newPriority,
-        status: newStatus,
-      })
-
-      setTickets(
-        tickets.map((t) =>
-          t.id === id
-            ? {
-                ...t,
-                title: newTitle,
-                priority: newPriority,
-                status: newStatus,
-              }
-            : t,
-        ),
-      )
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  const { userName } = useAuth()
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
@@ -119,7 +37,10 @@ function App() {
 
   return (
     <>
-      <div className="bg-blue-950 p-8 text-white text-2xl">{title}</div>
+      <div className="bg-blue-950 p-8 text-white text-2xl">
+        <h6>{title}</h6>
+        <h6>User: {userName}</h6>
+      </div>
       <div className="bg-gray-900 p-2 text-gray-400 text-2xl">by Marco</div>
       <TicketForm onCreate={handleAddTicket} />
       <DndContext onDragEnd={handleDragEnd}>

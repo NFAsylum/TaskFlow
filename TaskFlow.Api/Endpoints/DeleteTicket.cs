@@ -6,9 +6,9 @@ namespace TaskFlow.Api.Endpoints;
 
 public static class DeleteTicket
 {
-    public static void MapDeleteTicketEndpoints(this IEndpointRouteBuilder app)
+    public static void MapDeleteTicketEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/tickets/{id}", async (AppDbContext db, int id) =>
+        app.MapDelete(Endpoints.TicketsWithIdEndpoint, async (AppDbContext db, int id) =>
         {
             Ticket? ticket = await db.Tickets.FirstOrDefaultAsync(ticket => ticket.Id == id);
             if (ticket == null)
@@ -20,6 +20,6 @@ public static class DeleteTicket
             await db.SaveChangesAsync();
             
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
     }
 }

@@ -10,7 +10,7 @@ function TicketForm({ onCreate }: TicketFormProps) {
   const [priority, setPriority] = useState<Priority>(Priority.Low)
   const [status, setStatus] = useState<Status>(Status.Open)
 
-  function handleSubmit(submitEvent: SubmitEvent) {
+  function handleSubmit(submitEvent: React.SubmitEvent<HTMLFormElement>) {
     submitEvent.preventDefault()
     onCreate(title, priority, status)
 
