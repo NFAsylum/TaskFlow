@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=taskflow
+      - POSTGRES_PASSWORD=taskflow-dev-2026
+      - POSTGRES_DB=taskflow
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U taskflow']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - taskflow-net
+
+  api:
+    build: ./TaskFlow.Api
+    ports:
+      - '8080:8080'
+    command: ['--auto-create-jwt', 'true']
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - taskflow-net
+
+  frontend:
+    build: ./taskflow-frontend
+    ports:
+      - '80:80'
+    depends_on:
+      - api
+    networks:
+      - taskflow-net
+
+networks:
+  taskflow-net:
+    driver: bridge
+volumes:
+  postgres-data:

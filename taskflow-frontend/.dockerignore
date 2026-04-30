@@ -1,0 +1,11 @@
+# Build
+node_modules/
+dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Other
+.git/
+*.md
