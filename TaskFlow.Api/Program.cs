@@ -13,8 +13,21 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-string connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ??
-                          "Host=postgres;Database=taskflow;Username=taskflow;Password=taskflow-dev-2026";
+string connectionString;
+string? databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+if (databaseUrl != null)
+{
+    Uri uri = new Uri(databaseUrl);
+    string[] userInfo = uri.UserInfo.Split(':');
+    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};" +
+                       $"Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
+}
+else
+{
+    connectionString = "Host=postgres;Database=taskflow;Username=taskflow;Password=taskflow-dev-2026";
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString,
         npgsqlOptions => npgsqlOptions.EnableRetryOnFailure(maxRetryCount: 5)));
