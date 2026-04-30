@@ -13,15 +13,19 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+string connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ??
+                          "Host=postgres;Database=taskflow;Username=taskflow;Password=taskflow-dev-2026";
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql("Host=postgres;Database=taskflow;Username=taskflow;Password=taskflow-dev-2026",
+    options.UseNpgsql(connectionString,
         npgsqlOptions => npgsqlOptions.EnableRetryOnFailure(maxRetryCount: 5)));
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        string[] origins = (Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")
+            ?? "http://localhost:5173,http://localhost").Split(",");
+        policy.WithOrigins(origins)
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
