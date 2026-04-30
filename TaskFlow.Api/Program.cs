@@ -14,7 +14,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=taskflow.db"));
+    options.UseNpgsql("Host=postgres;Database=taskflow;Username=taskflow;Password=taskflow-dev-2026",
+        npgsqlOptions => npgsqlOptions.EnableRetryOnFailure(maxRetryCount: 5)));
 
 builder.Services.AddCors(options =>
 {
@@ -59,8 +60,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddHealthChecks();
 
 WebApplication app = builder.Build();
+
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    AppDbContext db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 app.UseCors();
 
@@ -83,5 +91,7 @@ app.MapMoveTicketEndpoint();
 app.MapUpdateTicketEndpoint();
 app.MapRegisterUserEndpoint();
 app.MapLoginUserEndpoint();
+
+app.MapHealthChecks("/health");
 
 app.Run();
