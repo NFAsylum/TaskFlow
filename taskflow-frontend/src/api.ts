@@ -1,6 +1,7 @@
 import type { Status, Ticket } from './types'
 
-const ticketApiPrefix = 'http://localhost:5278/api/tickets'
+const apiBase = import.meta.env.VITE_API_URL || ''
+const ticketApiPrefix = `${apiBase}/api/tickets`
 
 function authHeaders(): HeadersInit {
   const token = localStorage.getItem('token')
@@ -108,7 +109,7 @@ export async function registerUser(
   email: string,
   password: string,
 ) {
-  const response = await fetch('http://localhost:5278/api/auth/register', {
+  const response = await fetch(`${apiBase}/api/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -124,7 +125,7 @@ export async function registerUser(
 }
 
 export async function loginUser(email: string, password: string) {
-  const response = await fetch('http://localhost:5278/api/auth/login', {
+  const response = await fetch(`${apiBase}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
