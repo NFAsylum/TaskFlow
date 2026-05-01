@@ -1,5 +1,7 @@
 # TaskFlow
 
+![CI](https://github.com/NFAsylum/TaskFlow/actions/workflows/ci.yml/badge.svg)
+
 TaskFlow is a Kanban board for task management via tickets. TaskFlow enables fast and simple task management with drag-and-drop and edit in-place of tickets.
 
 [Live Demo](https://taskflow-frontend-t4ww.onrender.com/) - first request may take ~1 min (free-tier auto-stop)
